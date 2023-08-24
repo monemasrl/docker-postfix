@@ -17,11 +17,14 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     && tar -C /usr/local/bin -xzvf dockerize-linux-arm64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-linux-arm64-$DOCKERIZE_VERSION.tar.gz
 
+RUN apk update
 RUN apk --no-cache --upgrade add \
     bash \
     gomplate \
     ca-certificates \
+    pam-pgsql \
     cyrus-sasl \
+    cyrus-sasl-pam \
     cyrus-sasl-crammd5 \
     cyrus-sasl-digestmd5 \
     cyrus-sasl-login \
@@ -29,8 +32,8 @@ RUN apk --no-cache --upgrade add \
     cyrus-sasl-sql \
     postfix \
     postfix-pgsql \
-    supervisor \
-    && rm -Rf /usr/share/doc && rm -Rf /usr/share/man
+    supervisor
+    # && rm -Rf /usr/share/doc && rm -Rf /usr/share/man
 
 # Set up configuration
 ENV OPENDKIM_HOST= \
@@ -63,8 +66,8 @@ RUN mkdir /etc/postfix/pgsql
 
 RUN mkdir -p /var/run/saslauthd
 RUN mkdir -p /var/spool/postfix/var/run/saslauthd
-RUN chown root:sasl /var/run/saslauthd
+# RUN chown root:sasl /var/run/saslauthd
 RUN chmod 710 /var/run/saslauthd
-RUN chmod --reference=/var/run/saslauthd /var/spool/postfix/var/run/saslauthd
+# RUN chmod --reference=/var/run/saslauthd /var/spool/postfix/var/run/saslauthd
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
