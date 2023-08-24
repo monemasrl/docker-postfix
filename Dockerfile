@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1.4
 ARG VERSION=latest
-FROM alpine:$VERSION
+FROM ubuntu:22.04
+
 ENV DOCKERIZE_VERSION v0.7.0
 
 LABEL maintainer="Andrea Bettarini <bettarini@monema.it>"
@@ -12,27 +13,26 @@ LABEL org.opencontainers.image.source="https://github.com/monemasrl/docker-postf
 LABEL org.opencontainers.image.title="monemaweb/postfix"
 LABEL org.opencontainers.image.url="https://github.com/monemasrl/docker-postfix"
 
+RUN apt-get update
+RUN apt-get -y install \
+    bash \
+    wget \
+    ca-certificates \
+    sasl2-bin \
+    libsasl2-modules \
+    libsasl2-modules-sql \
+    libpam-pgsql \
+    supervisor
+    # && rm -rf /var/lib/apt/lists/*
+    # && rm -Rf /usr/share/doc && rm -Rf /usr/share/man
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get install -y postfix postfix-pgsql
 # install dockerize
 RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-arm64-$DOCKERIZE_VERSION.tar.gz \
     && tar -C /usr/local/bin -xzvf dockerize-linux-arm64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-linux-arm64-$DOCKERIZE_VERSION.tar.gz
-
-RUN apk update
-RUN apk --no-cache --upgrade add \
-    bash \
-    gomplate \
-    ca-certificates \
-    pam-pgsql \
-    cyrus-sasl \
-    cyrus-sasl-crammd5 \
-    cyrus-sasl-digestmd5 \
-    cyrus-sasl-login \
-    cyrus-sasl-ntlm \
-    cyrus-sasl-sql \
-    postfix \
-    postfix-pgsql \
-    supervisor
-    # && rm -Rf /usr/share/doc && rm -Rf /usr/share/man
 
 # Set up configuration
 ENV OPENDKIM_HOST= \
@@ -63,7 +63,7 @@ COPY ./templates /srv/templates
 COPY ./configs/pam/smtp /etc/pam.d/smtp
 COPY ./configs/supervisord/supervisord-postfix.conf /etc/supervisor/conf.d/supervisord-postfix.conf
 RUN mkdir /etc/postfix/pgsql
-
+RUN mkdir /etc/sasl2
 RUN mkdir -p /var/run/saslauthd
 RUN mkdir -p /var/spool/postfix/var/run/saslauthd
 # RUN chown root:sasl /var/run/saslauthd
@@ -71,3 +71,4 @@ RUN chmod 710 /var/run/saslauthd
 # RUN chmod --reference=/var/run/saslauthd /var/spool/postfix/var/run/saslauthd
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+

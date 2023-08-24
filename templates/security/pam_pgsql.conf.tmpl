@@ -1,3 +1,3 @@
-connect = dbname={{ Env.POSTGRES_DB_NAME }} user={{ Env.POSTGRES_DB_USER }} password={{ Env.POSTGRES_DB_PASSWORD }}
+connect = dbname={{ .Env.POSTGRES_DB_NAME }} user={{ .Env.POSTGRES_DB_USER }} password={{ .Env.POSTGRES_DB_PASSWORD }}
 auth_query = SELECT password FROM mailbox WHERE local_part = %u
 pw_type = crypt
