@@ -33,9 +33,6 @@ RUN apk --no-cache --upgrade add \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man
 
 # Set up configuration
-COPY --link /configs/smtpd.conf  /etc/sasl2/smtpd.conf
-COPY --link /scripts/run.sh      /
-RUN         chmod +x /run.sh
 ENV OPENDKIM_HOST= \
     OPENDKIM_PORT= \
     POSTFIX_maillog_file=/dev/stdout \
@@ -58,8 +55,9 @@ WORKDIR    /etc/postfix
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 CMD printf "EHLO healthcheck\n" | nc 127.0.0.1 587 | grep -qE "^220.*ESMTP Postfix"
 
 EXPOSE     587
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY ./templates /srv/templates
 COPY ./configs/supervisord/supervisord-postfix.conf /etc/supervisor/conf.d/supervisord-postfix.conf
 RUN mkdir /etc/postfix/pgsql
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

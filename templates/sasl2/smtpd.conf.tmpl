@@ -1,0 +1,12 @@
+pwcheck_method: auxprop
+mech_list: plain login cram-md5 digest-md5
+auxprop_plugin: sql
+sql_engine: pgsql
+sql_hostnames: {{ Env.POSTGRES_DB_HOST }}
+sql_user: {{ Env.POSTGRES_DB_USER }}
+sql_passwd: {{ Env.POSTGRES_DB_PASSWORD }}
+sql_database: {{ Env.POSTGRES_DB_NAME }}
+sql_select: select `%p` from users where userName = '%u'
+sql_insert: insert into users (userName,userRealm,`%p`) values ('%u','%r','%
+v')
+sql_update: update users set `%p` = '%v' where userName = '%u'
