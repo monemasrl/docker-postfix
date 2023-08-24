@@ -24,7 +24,6 @@ RUN apk --no-cache --upgrade add \
     ca-certificates \
     pam-pgsql \
     cyrus-sasl \
-    cyrus-sasl-pam \
     cyrus-sasl-crammd5 \
     cyrus-sasl-digestmd5 \
     cyrus-sasl-login \
@@ -61,6 +60,7 @@ EXPOSE     587
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 COPY ./templates /srv/templates
+COPY ./configs/pam/smtp /etc/pam.d/smtp
 COPY ./configs/supervisord/supervisord-postfix.conf /etc/supervisor/conf.d/supervisord-postfix.conf
 RUN mkdir /etc/postfix/pgsql
 
