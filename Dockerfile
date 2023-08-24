@@ -43,7 +43,15 @@ ENV OPENDKIM_HOST= \
     POSTFIX_smtpd_tls_security_level=may \
     POSTFIX_smtpd_tls_ciphers=high \
     POSTFIX_smtpd_tls_exclude_ciphers=aNULL,MD5 \
-    POSTFIX_smtpd_tls_protocols=>=TLSv1.2 
+    POSTFIX_smtpd_tls_protocols=>=TLSv1.2 \
+    POSTGRES_DB_HOST=postgres \
+    POSTGRES_DB_USER= \
+    POSTGRES_DB_PASSWORD= \
+    POSTGRES_DB_NAME= \
+    POSTFIXADMIN_DB_HOST= \
+    POSTFIXADMIN_DB_USER= \
+    POSTFIXADMIN_DB_PASSWORD= \
+    POSTFIXADMIN_DB_NAME=
 
 # Set up volumes
 VOLUME     [ "/var/spool/postfix" ]
