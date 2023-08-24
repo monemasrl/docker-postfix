@@ -56,6 +56,7 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 CMD print
 
 EXPOSE     587
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 COPY ./templates /srv/templates
 COPY ./configs/supervisord/supervisord-postfix.conf /etc/supervisor/conf.d/supervisord-postfix.conf
 RUN mkdir /etc/postfix/pgsql
