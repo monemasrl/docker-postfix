@@ -61,4 +61,10 @@ COPY ./templates /srv/templates
 COPY ./configs/supervisord/supervisord-postfix.conf /etc/supervisor/conf.d/supervisord-postfix.conf
 RUN mkdir /etc/postfix/pgsql
 
+RUN mkdir -p /var/run/saslauthd
+RUN mkdir -p /var/spool/postfix/var/run/saslauthd
+RUN chown root:sasl /var/run/saslauthd
+RUN chmod 710 /var/run/saslauthd
+RUN chmod --reference=/var/run/saslauthd /var/spool/postfix/var/run/saslauthd
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
