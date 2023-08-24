@@ -1,0 +1,5 @@
+user = {{ .Env.POSTFIXADMIN_DB_USER }}
+password = {{ .Env.POSTFIXADMIN_DB_PASSWORD }}
+hosts = {{ .Env.POSTFIXADMIN_DB_HOST }}
+dbname = {{ .Env.POSTFIXADMIN_DB_NAME }}
+query = SELECT goto FROM alias WHERE address='%s' AND active = true

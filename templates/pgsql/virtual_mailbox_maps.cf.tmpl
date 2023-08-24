@@ -1,0 +1,5 @@
+user = {{ .Env.POSTFIXADMIN_DB_USER }}
+password = {{ .Env.POSTFIXADMIN_DB_PASSWORD }}
+hosts = {{ .Env.POSTFIXADMIN_DB_HOST }}
+dbname = {{ .Env.POSTFIXADMIN_DB_NAME }}
+query = SELECT maildir FROM mailbox WHERE username='%s' AND active = true

@@ -1,0 +1,7 @@
+user = {{ .Env.POSTFIXADMIN_DB_USER }}
+password = {{ .Env.POSTFIXADMIN_DB_PASSWORD }}
+hosts = {{ .Env.POSTFIXADMIN_DB_HOST }}
+dbname = {{ .Env.POSTFIXADMIN_DB_NAME }}
+#query = SELECT domain FROM domain WHERE domain='%s' AND active = true
+#optional query to use when relaying for backup MX
+query = SELECT domain FROM domain WHERE domain='%s' and backupmx = false and active = true

@@ -1,0 +1,28 @@
+maillog_file = /dev/stdout
+smtp_helo_name = Postfix
+myhostname = postfix
+myorigin = postfix
+
+smtpd_banner = $myhostname ESMTP
+biff = no
+append_dot_mydomain = no
+readme_directory = no
+
+compatibility_level = 2
+
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+smtpd_relay_restrictions = permit_sasl_authenticated defer_unauth_destination
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+mydestination = localhost.localdomain, localhost
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = ipv4
+
+virtual_mailbox_domains = proxy:pgsql:/etc/postfix/pgsql/virtual_domains_maps.cf
+virtual_mailbox_maps = proxy:pgsql:/etc/postfix/pgsql/virtual_mailbox_maps.cf
+virtual_alias_maps = proxy:pgsql:/etc/postfix/pgsql/virtual_alias_maps.cf
+relay_domains = $mydestination, proxy:pgsql:/etc/postfix/pgsql/relay_domains.cf
