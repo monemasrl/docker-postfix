@@ -37,11 +37,13 @@ tls_config() {
 }
 
 configure_dkim() {
-    echo "Configuring DKIM"
-    postconf -e milter_default_action=accept
-    postconf -e milter_protocol=2
-    postconf -e smtpd_milters="inet:${OPENDKIM_HOST}:${OPENDKIM_PORT}"
-    postconf -e non_smtpd_milters="inet:${OPENDKIM_HOST}:${OPENDKIM_PORT}"
+    if [[ -n "${OPENDKIM_HOST}" ]] && [[ "${OPENDKIM_PORT}" ]]; then
+        echo "Configuring DKIM"
+        postconf -e milter_default_action=accept
+        postconf -e milter_protocol=2
+        postconf -e smtpd_milters="inet:${OPENDKIM_HOST}:${OPENDKIM_PORT}"
+        postconf -e non_smtpd_milters="inet:${OPENDKIM_HOST}:${OPENDKIM_PORT}"
+    fi
 }
 
 # Enable port 587

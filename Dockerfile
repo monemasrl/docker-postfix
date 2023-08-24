@@ -43,9 +43,7 @@ ENV OPENDKIM_HOST= \
     POSTFIX_smtpd_tls_security_level=may \
     POSTFIX_smtpd_tls_ciphers=high \
     POSTFIX_smtpd_tls_exclude_ciphers=aNULL,MD5 \
-    POSTFIX_smtpd_tls_protocols=>=TLSv1.2 \
-    SMTP_USER= \
-    SMTP_PASSWORD=
+    POSTFIX_smtpd_tls_protocols=>=TLSv1.2 
 
 # Set up volumes
 VOLUME     [ "/var/spool/postfix" ]
