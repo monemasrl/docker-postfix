@@ -1,0 +1,10 @@
+host={{.Env.POSTGRES_DB_HOST }} 
+database={{ .Env.POSTGRES_DB_NAME }} 
+user={{ .Env.POSTGRES_DB_USER }} 
+password={{ .Env.POSTGRES_DB_PASSWORD }}
+port=5432 
+table=mailbox
+pwd_column=password
+user_column=local_part
+pw_type=crypt_md5
+debug=1
